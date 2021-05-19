@@ -1,50 +1,55 @@
-import { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import {  Fragment } from "react";
 import { Redirect } from "react-router";
-import { addCourse } from "../../Actions";
 import Header from "../../Reusable_Component/Header/Header";
 import "./AddCourse.css";
+import {useState , useContext} from 'react'
+import {mySetState,myState} from "../../myContext/myContext";
 
-class AddCourse extends Component {
-  state = {
+
+function AddCourse () {
+
+  const [details,setDetails] = useState({
     isEmpty: true,
     title: "",
     author: "",
     category: "",
     length: "",
     redirect: "/add-course",
-  };
+  })
+  const state = useContext(myState);
+  const setState = useContext(mySetState);
+ 
 
-  getTitle = (value) => {
-    this.setState({
+  function getTitle(value){
+    setDetails({...details,
       title: value,
       isEmpty: value.length === 0,
     });
   };
 
-  getAuthor = (value) => {
-    this.setState({
+  function getAuthor(value){
+    setDetails({...details,
       author: value,
       isEmpty: value.length === 0,
     });
   };
 
-  getCategory = (value) => {
-    this.setState({
+  function getCategory(value){
+    setDetails({...details,
       category: value,
       isEmpty: value.length === 0,
     });
   };
 
-  getlength = (value) => {
-    this.setState({
+  function getlength(value){
+    setDetails({...details,
       length: value,
       isEmpty: value.length === 0,
     });
   };
 
-  clearValues = () => {
-    this.setState({
+  function clearValues (){
+    setDetails({...details,
       isEmpty: true,
       title: "",
       author: "",
@@ -53,20 +58,20 @@ class AddCourse extends Component {
     });
   };
 
-  checkValidity = () => {
-    if (this.state.title.length === 0) {
+  function checkValidity (){
+    if (details.title.length === 0) {
       alert("Enter Title");
       return false;
     }
-    if (this.state.author.length === 0) {
+    if (details.author.length === 0) {
       alert("Enter Author");
       return false;
     }
-    if (this.state.category.length === 0) {
+    if (details.category.length === 0) {
       alert("Enter Category");
       return false;
     }
-    if (this.state.length.length === 0) {
+    if (details.length.length === 0) {
       alert("Enter Length");
       return false;
     }
@@ -74,22 +79,29 @@ class AddCourse extends Component {
     return true;
   };
 
-  submitData = () => {
-    if (this.checkValidity()) {
-      this.props.addCourse({
-        id: this.props.CourseDetails.length + 1,
-        title: this.state.title,
-        length: this.state.length,
-        category: this.state.category,
-        author: this.state.author,
+ function addCourse(data){
+    setState({
+      ...state,
+      CourseDetails: [...state.CourseDetails, data],
+    })
+ } 
+
+  function submitData (){
+    if (checkValidity()) {
+      addCourse({
+        id: state.CourseDetails.length + 1,
+        title: details.title,
+        length:details.length,
+        category: details.category,
+        author: details.author,
       });
-      this.setState({
+      setDetails({
+        ...details,
         redirect: "/",
       });
     }
   };
 
-  render() {
     return (
       <Fragment>
         <Header />
@@ -102,10 +114,10 @@ class AddCourse extends Component {
             <input
               required
               type="text"
-              value={this.state.title}
+              value={details.title}
               placeholder="Title of the course"
               onChange={(event) => {
-                this.getTitle(event.target.value);
+                getTitle(event.target.value);
               }}
             />
 
@@ -113,9 +125,9 @@ class AddCourse extends Component {
             <select
               required
               name="author"
-              value={this.state.author}
+              value={details.author}
               onChange={(event) => {
-                this.getAuthor(event.target.value);
+                getAuthor(event.target.value);
               }}
             >
               <option value=""></option>
@@ -128,10 +140,10 @@ class AddCourse extends Component {
             <input
               required
               type="text"
-              value={this.state.category}
+              value={details.category}
               placeholder="Category of the course"
               onChange={(event) => {
-                this.getCategory(event.target.value);
+                getCategory(event.target.value);
               }}
             />
 
@@ -139,28 +151,28 @@ class AddCourse extends Component {
             <input
               required
               type="text"
-              value={this.state.length}
+              value={details.length}
               placeholder="Length of course in minutes or hours"
               onChange={(event) => {
-                this.getlength(event.target.value);
+                getlength(event.target.value);
               }}
             />
           </div>
           <br></br>
           <div className="buttons">
-            <Redirect to={this.state.redirect}></Redirect>
-            <span className="button-submit" onClick={this.submitData}>
+            <Redirect to={details.redirect}></Redirect>
+            <span className="button-submit" onClick={()=>submitData()}>
               <i className="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
             </span>
             &nbsp;&nbsp;&nbsp;&nbsp;
             <span
               className={
-                this.state.isEmpty
+                details.isEmpty
                   ? "button-clear-values-inactive"
                   : "button-clear-values-active"
               }
               onClick={() => {
-                this.clearValues();
+                clearValues();
               }}
             >
               Clear Values
@@ -169,7 +181,7 @@ class AddCourse extends Component {
             <span
               className="button-cancel"
               onClick={() => {
-                this.setState({ redirect: "/" });
+                setDetails({...details ,  redirect: "/" });
               }}
             >
               Cancel
@@ -179,19 +191,5 @@ class AddCourse extends Component {
       </Fragment>
     );
   }
-}
 
-const mapStateToProps = (state) => {
-  return {
-    CourseDetails: state.CourseDetails,
-  };
-};
-const mapDispatchToProps = (dispatch) => {
-  return {
-    addCourse: (courseData) => {
-      dispatch(addCourse(courseData));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddCourse);
+export default AddCourse;
