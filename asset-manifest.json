@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/courses_app-contextApi-/static/css/main.5110a660.chunk.css",
+    "main.js": "/courses_app-contextApi-/static/js/main.8e9527ed.chunk.js",
+    "main.js.map": "/courses_app-contextApi-/static/js/main.8e9527ed.chunk.js.map",
+    "runtime-main.js": "/courses_app-contextApi-/static/js/runtime-main.16e02611.js",
+    "runtime-main.js.map": "/courses_app-contextApi-/static/js/runtime-main.16e02611.js.map",
+    "static/js/2.394471c6.chunk.js": "/courses_app-contextApi-/static/js/2.394471c6.chunk.js",
+    "static/js/2.394471c6.chunk.js.map": "/courses_app-contextApi-/static/js/2.394471c6.chunk.js.map",
+    "static/js/3.189ee08b.chunk.js": "/courses_app-contextApi-/static/js/3.189ee08b.chunk.js",
+    "static/js/3.189ee08b.chunk.js.map": "/courses_app-contextApi-/static/js/3.189ee08b.chunk.js.map",
+    "index.html": "/courses_app-contextApi-/index.html",
+    "static/css/main.5110a660.chunk.css.map": "/courses_app-contextApi-/static/css/main.5110a660.chunk.css.map",
+    "static/js/2.394471c6.chunk.js.LICENSE.txt": "/courses_app-contextApi-/static/js/2.394471c6.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.16e02611.js",
+    "static/js/2.394471c6.chunk.js",
+    "static/css/main.5110a660.chunk.css",
+    "static/js/main.8e9527ed.chunk.js"
+  ]
+}
