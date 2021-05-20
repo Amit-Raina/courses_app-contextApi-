@@ -79,12 +79,7 @@ function AddCourse () {
     return true;
   };
 
- function addCourse(data){
-    setState({
-      ...state,
-      CourseDetails: [...state.CourseDetails, data],
-    })
- } 
+ 
 
   function submitData (){
     if (checkValidity()) {
@@ -101,6 +96,14 @@ function AddCourse () {
       });
     }
   };
+
+  function addCourse(data){
+    setState({
+      ...state,
+      CourseDetails: [...state.CourseDetails, data],
+      selectedToUpdate: null
+    })
+ } 
 
     return (
       <Fragment>
@@ -182,6 +185,7 @@ function AddCourse () {
               className="button-cancel"
               onClick={() => {
                 setDetails({...details ,  redirect: "/" });
+                setState({...state , selectedToUpdate: null,})
               }}
             >
               Cancel

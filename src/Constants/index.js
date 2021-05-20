@@ -1,4 +1,0 @@
-export const ADDNEWCOURSE = "ADDNEWCOURSE";
-export const EDITCOURSE = "EDITCOURSE";
-export const SELECTEDID = "SELECTEDID";
-export const DELETECOURSE = "DELETECOURSE";

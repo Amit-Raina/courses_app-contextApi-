@@ -1,67 +1,64 @@
-import { Component, Fragment } from "react";
-import { connect } from "react-redux";
+import { Fragment, useState, useContext } from "react";
 import { Redirect } from "react-router";
-import { editCourse } from "../../Actions";
 import Header from "../../Reusable_Component/Header/Header";
 import "../AddCourse/AddCourse.css";
+import {mySetState,myState} from "../../myContext/myContext";
 
-class EditCourse extends Component {
-  state = {
-    title: this.props.CourseDetails[this.props.selectedId - 1].title,
-    author: this.props.CourseDetails[this.props.selectedId - 1].author,
-    category: this.props.CourseDetails[this.props.selectedId - 1].category,
-    length: this.props.CourseDetails[this.props.selectedId - 1].length,
+function EditCourse() {
+
+  const state = useContext(myState);
+  const setState = useContext(mySetState);
+
+  const [details, setDetails] = useState({
+    title: state.CourseDetails[state.selectedToUpdate - 1].title,
+    author: state.CourseDetails[state.selectedToUpdate - 1].author,
+    category: state.CourseDetails[state.selectedToUpdate - 1].category,
+    length: state.CourseDetails[state.selectedToUpdate - 1].length,
     redirect: "/edit-course",
-  };
+  });
 
-  getTitle = (value) => {
-    this.setState({
+  function getTitle(value){
+    setDetails({
+      ...details,
       title: value,
     });
   };
 
-  getAuthor = (value) => {
-    this.setState({
+  function getAuthor(value){
+    setDetails({
+      ...details,
       author: value,
     });
   };
 
-  getCategory = (value) => {
-    this.setState({
+  function getCategory(value){
+    setDetails({
+      ...details,
       category: value,
     });
   };
 
-  getlength = (value) => {
-    this.setState({
+  function getlength(value){
+    setDetails({
+      ...details,
       length: value,
     });
   };
 
-  clearValues = () => {
-    this.setState({
-      isEmpty: true,
-      title: "",
-      author: "",
-      category: "",
-      length: "",
-    });
-  };
-
-  checkValidity = () => {
-    if (this.state.title.length === 0) {
+  function checkValidity(){
+    if (details.title.length === 0) {
       alert("Enter Title");
       return false;
     }
-    if (this.state.author.length === 0) {
+    if (details.author.length === 0) {
       alert("Enter Author");
       return false;
     }
-    if (this.state.category.length === 0) {
+    if (details.category.length === 0) {
       alert("Enter Category");
       return false;
     }
-    if (this.state.length.length === 0) {
+    if (details.length.length === 0) {
       alert("Enter Length");
       return false;
     }
@@ -69,113 +66,109 @@ class EditCourse extends Component {
     return true;
   };
 
-  submitValues = () => {
-    if (this.checkValidity()) {
-      this.props.editCourse(
+  function submitValues(){
+    if (checkValidity()) {
+      editCourse(
         {
-          id: this.props.selectedId,
-          title: this.state.title,
-          length: this.state.length,
-          category: this.state.category,
-          author: this.state.author,
+          id: state.selectedToUpdate,
+          title: details.title,
+          length: details.length,
+          category: details.category,
+          author: details.author,
         },
-        this.props.selectedId
+        state.selectedToUpdate
       );
 
-      this.setState({
+      setDetails({
+        ...details,
         redirect: "/",
       });
     }
   };
 
-  render() {
-    return (
-      <Fragment>
-        <Header />
-        <div className="content-body-add-course">
-          <div className="add-title">
-            <h1>Edit</h1>
-          </div>
-          <div className="fields">
-            <p>Title</p>
-            <input
-              type="text"
-              value={this.state.title}
-              placeholder="Title of the course"
-              onChange={(event) => {
-                this.getTitle(event.target.value);
-              }}
-            />
+  function editCourse(courseData, id){
 
-            <p>Author</p>
-            <select
-              name="author"
-              defaultValue={this.state.author}
-              onChange={(event) => {
-                this.getAuthor(event.target.value);
-              }}
-            >
-              <option value=""></option>
-              <option value="cory-house">Cory House</option>
-              <option value="scott-allen">Scott Allen</option>
-              <option value="dan-wahlin">Dan Wahlin</option>
-            </select>
-
-            <p>Category</p>
-            <input
-              type="text"
-              value={this.state.category}
-              placeholder="Category of the course"
-              onChange={(event) => {
-                this.getCategory(event.target.value);
-              }}
-            />
-
-            <p>Length</p>
-            <input
-              type="text"
-              value={this.state.length}
-              placeholder="Length of course in minutes or hours"
-              onChange={(event) => {
-                this.getlength(event.target.value);
-              }}
-            />
-          </div>
-          <br></br>
-          <div className="buttons">
-            <span className="button-submit" onClick={this.submitValues}>
-              <Redirect to={this.state.redirect}></Redirect>
-              <i className="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
-            </span>
-            &nbsp;&nbsp;&nbsp;&nbsp;
-            <span
-              className="button-cancel"
-              onClick={() => {
-                this.setState({ redirect: "/" });
-              }}
-            >
-              Cancel
-            </span>
-          </div>
-        </div>
-      </Fragment>
-    );
+    const newCourseDetails = state.CourseDetails.map((data) => {
+      if (data.id === id) return courseData;
+      return data;
+    });
+    setState({
+      ...state,
+      CourseDetails: newCourseDetails,
+    });
   }
+
+  return (
+    <Fragment>
+      <Header />
+      <div className="content-body-add-course">
+        <div className="add-title">
+          <h1>Edit</h1>
+        </div>
+        <div className="fields">
+          <p>Title</p>
+          <input
+            type="text"
+            value={details.title}
+            placeholder="Title of the course"
+            onChange={(event) => {
+              getTitle(event.target.value);
+            }}
+          />
+
+          <p>Author</p>
+          <select
+            name="author"
+            defaultValue={details.author}
+            onChange={(event) => {
+              getAuthor(event.target.value);
+            }}
+          >
+            <option value=""></option>
+            <option value="cory-house">Cory House</option>
+            <option value="scott-allen">Scott Allen</option>
+            <option value="dan-wahlin">Dan Wahlin</option>
+          </select>
+
+          <p>Category</p>
+          <input
+            type="text"
+            value={details.category}
+            placeholder="Category of the course"
+            onChange={(event) => {
+              getCategory(event.target.value);
+            }}
+          />
+
+          <p>Length</p>
+          <input
+            type="text"
+            value={details.length}
+            placeholder="Length of course in minutes or hours"
+            onChange={(event) => {
+              getlength(event.target.value);
+            }}
+          />
+        </div>
+        <br></br>
+        <div className="buttons">
+          <span className="button-submit" onClick={() => submitValues()}>
+            <Redirect to={details.redirect}></Redirect>
+            <i className="fa fa-paper-plane-o" aria-hidden="true"></i> Submit
+          </span>
+          &nbsp;&nbsp;&nbsp;&nbsp;
+          <span
+            className="button-cancel"
+            onClick={() => {
+              setDetails({...details, redirect: "/" });
+            }}
+          >
+            Cancel
+          </span>
+        </div>
+      </div>
+    </Fragment>
+  );
 }
 
-const mapStateToProps = (state) => {
-  return {
-    CourseDetails: state.CourseDetails,
-    selectedId: state.selectedToUpdate,
-  };
-};
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    editCourse: (courseData, id) => {
-      dispatch(editCourse(courseData, id));
-    },
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditCourse);
+export default EditCourse;

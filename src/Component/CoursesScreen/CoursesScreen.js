@@ -12,14 +12,12 @@ function CoursesScreen(){
   const setState = useContext(mySetState);
 
   function deleteCourse(){
-    console.log("del")
     
     if (currentlyOn === null) return;
     else {
       const updatedCourseDetails = state.CourseDetails.filter((data) => {
         return data.id !== currentlyOn;
       });
-      console.log(updatedCourseDetails)
       for (let key in updatedCourseDetails) {
         updatedCourseDetails[key].id = parseInt(key) + 1;
       }
@@ -28,7 +26,6 @@ function CoursesScreen(){
         CourseDetails: updatedCourseDetails})
     }
   }
-
     return (
       <Fragment>
       <Header />
@@ -95,8 +92,10 @@ function CoursesScreen(){
                       currentSelected={() => {
                         if (currentlyOn === data.id) {
                           setCurrenlyOn(null);
+                          setState({...state , selectedToUpdate: null});
                         } else {
                           setCurrenlyOn(data.id);
+                          setState({...state , selectedToUpdate: data.id});
                         }
                       }}
                     />
